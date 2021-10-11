@@ -131,11 +131,13 @@ export default function Book() {
                 setRecommendedButton(true);
             })
     }
+
     const recommendedBook = () => {
-        setTitle(cards[0].volumeInfo.title)
-        setAuthors(cards[0].volumeInfo.authors)
-        setThumbnail(cards[0].volumeInfo.imageLinks.thumbnail)
-        setDescription(cards[0].volumeInfo.description)
+        const items = cards[Math.floor(Math.random() * cards.length)];
+        setTitle(items.volumeInfo.title)
+        setAuthors(items.volumeInfo.authors)
+        setThumbnail(items.volumeInfo.imageLinks.thumbnail)
+        setDescription(items.volumeInfo.description)
     }
 
     const handleCards = () => {
