@@ -6,8 +6,6 @@ import BookCards from './BookCards';
 import book from "../assets/book2.jpg"
 import { styled } from '@mui/system';
 
-
-
 const Root = styled("div")({
     background: `url(${book})`,
     textAlign: "center",
@@ -86,7 +84,6 @@ const RecommendPopupCard = styled(Paper)({
     flexDirection: "column",
     textAlign: "center",
     textOverflow: "ellipsis",
-    overflow: "scroll",
 })
 
 const TextContainer = styled("div")({
@@ -118,7 +115,9 @@ export default function Book() {
     const [title, setTitle] = useState("");
     const [authors, setAuthors] = useState("");
     const [thumbnail, setThumbnail] = useState("");
-    const [description, setDescription] = useState("");
+    const [pageCount, setPageCount] = useState("");
+    const [publisher, setPublisher] = useState("");
+    const [readOnline, setReadOnline] = useState("");
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -127,6 +126,7 @@ export default function Book() {
         e.preventDefault();
         axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`)
             .then((response) => {
+                console.log(response)
                 setCards(response.data.items)
                 setRecommendedButton(true);
             })
@@ -137,7 +137,9 @@ export default function Book() {
         setTitle(items.volumeInfo.title)
         setAuthors(items.volumeInfo.authors)
         setThumbnail(items.volumeInfo.imageLinks.thumbnail)
-        setDescription(items.volumeInfo.description)
+        setPageCount(items.volumeInfo.pageCount)
+        setPublisher(items.volumeInfo.publisher)
+        setReadOnline(items.volumeInfo.canonicalVolumeLink)
     }
 
     const handleCards = () => {
@@ -147,12 +149,17 @@ export default function Book() {
                 thumbnail = book.volumeInfo.imageLinks.thumbnail;
             }
             return (
-                <div key={book.id} >
+                <div key={i} >
                     <BookCards
                         thumbnail={thumbnail}
                         title={book.volumeInfo.title}
                         authors={book.volumeInfo.authors}
                         description={book.volumeInfo.description}
+                        pagecount={book.volumeInfo.pageCount}
+                        publisher={book.volumeInfo.publisher}
+                        averageRating={book.volumeInfo.averageRating}
+                        ratingCount={book.volumeInfo.ratingsCount}
+                        pageCount={book.volumeInfo.pageCount}
                     />
                 </div>
             );
@@ -198,8 +205,20 @@ export default function Book() {
                     <RecommendPopupCard>
                         <img style={{ margin: "0 auto" }} src={thumbnail} alt="slika" />
                         <h1>{title}</h1>
-                        <p style={{ fontWeight: "900" }}>{authors}</p>
-                        <p style={{ textAlign: "left" }}>{description}</p>
+                        <p style={{ fontWeight: "900" }}>Authors: {authors}</p>
+                        <p style={{ textAlign: "center" }}>Page Count: {pageCount}</p>
+                        <p style={{ textAlign: "center" }}>Publisher: {publisher}</p>
+                        <a style={{
+                            textDecoration: "none",
+                            color: "white"
+                        }} href={readOnline} target="_blank" rel="noreferrer">
+                            <Button variant="contained" color="primary" style={{
+                                width: "50%",
+                                margin: "auto"
+                            }}>
+                                Read this book online
+                            </Button>
+                        </a>
                     </RecommendPopupCard>
                 </RecommendPopup>
                 {!recommendedButton && <TextContainer>

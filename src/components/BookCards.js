@@ -64,11 +64,10 @@ const PopupCard = styled(Paper)({
     flexDirection: "column",
     textAlign: "center",
     textOverflow: "ellipsis",
-    overflow: "scroll",
 })
 
 
-export default function BookCards({ thumbnail, authors, title, description }) {
+export default function BookCards({ thumbnail, authors, title, description, publisher, averageRating, ratingCount, pageCount }) {
 
 
     const [open, setOpen] = useState(false);
@@ -101,8 +100,11 @@ export default function BookCards({ thumbnail, authors, title, description }) {
                 <PopupCard>
                     <img style={{ margin: "0 auto" }} src={thumbnail} alt="slika" />
                     <h1>{title}</h1>
-                    <p style={{ fontWeight: "900" }}>{authors}</p>
-                    <p style={{ textAlign: "left" }}>{description}</p>
+                    <p style={{ fontWeight: "900" }}>Authors: {authors}</p>
+                    <p style={{ textAlign: "center" }}>Publisher: {publisher}</p>
+                    <p style={{ textAlign: "center" }}>Page Count: {pageCount}</p>
+                    <p style={{ textAlign: "center" }}>Average Rating: {averageRating}</p>
+                    <p style={{ textAlign: "center" }}>Rating Count: {ratingCount}</p>
                 </PopupCard>
 
             </Popup>
